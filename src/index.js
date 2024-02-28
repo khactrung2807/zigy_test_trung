@@ -2,11 +2,8 @@ require('dotenv').config()
 
 const express = require('express');
 
-const initApiRoute = require('./routes/api');
+const initApiRoute  = require('./routes/api'); 
 const configViewEngine = require('./config/viewEngine');
-const { checkDatabaseExists } = require('./config/connectDB');
-const path = require('path');
-
 
 const app = express();
 const port = process.env.PORT;
@@ -25,22 +22,18 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use("/sql", express.static(path.join(__dirname, "sql")));
-
-
+app.use(express.json()); 
+app.use(express.urlencoded({extended: true})); 
+  
+   
 
 configViewEngine(app);
 
 initApiRoute(app);
-
-checkDatabaseExists();
-
 app.use((req, res) => {
     res.status(404).json({ error: 'Không có API này' });
 });
 
-const server = app.listen(port, () => {
+const server = app.listen(port,() =>{
     console.log(`nodejs JS ${port}`)
 })
